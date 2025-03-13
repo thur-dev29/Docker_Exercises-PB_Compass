@@ -35,7 +35,7 @@ chmod +x logs.sh
 ./logs.sh
 ```
 
-3 - Listando e removendo containers
+## 3 - Listando e removendo containers
 
 Listar containers em execução => 
 ```bash
