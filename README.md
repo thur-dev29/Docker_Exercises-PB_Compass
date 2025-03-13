@@ -21,7 +21,7 @@ apt update && apt install nano
 nano logs.sh
 ```
 
-Dentro do **logs.sh**
+Dentro de **logs.sh**
 
 ```bash
 #!/bin/bash
