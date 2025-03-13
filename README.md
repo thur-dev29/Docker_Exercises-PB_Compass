@@ -78,7 +78,7 @@ echo "Flask==2.2.5" > requirements.txt
 
 sudo nano Dockerfile
 ```
-Dentro de Dockerfile
+Dentro de **Dockerfile**
 ```bash
 FROM python:3.9
 
