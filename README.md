@@ -53,3 +53,48 @@ Remover um container =>
 ```bash
 docker rm <container_id>
 ```
+
+## 4 - Criando um Dockerfile para uma aplicação simples em Python
+```bash
+mkdir api-flask && cd api-flask
+
+sudo nano app.py
+```
+Dentro de **app.py**
+```bash
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "API Flask funcionando corretamente!"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+```
+```bash
+echo "Flask==2.2.5" > requirements.txt
+
+sudo nano Dockerfile
+```
+Dentro de Dockerfile
+```bash
+FROM python:3.9
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
+```
+```bash
+docker build -t api .
+
+docker run -p 5000:5000 api
+```
+http://localhost:5000/
