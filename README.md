@@ -36,6 +36,7 @@ chmod +x logs.sh
 ```
 
 3 - Listando e removendo containers
+
 Listar containers em execução => 
 ```bash
 docker ps
