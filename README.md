@@ -317,7 +317,7 @@ Se estiver usando Docker, instale as dependências antes de construir o containe
 docker run --rm -v $(pwd):/app -w /app node:18 npm install
 ```
 
-## 7. Subir os Containers
+### 7. Subir os Containers
 ```sh
 docker-compose up -d --build
 ```
@@ -329,12 +329,83 @@ npm install
 docker-compose up -d --build
 ```
 
-## 8. Verificar se os containers estão rodando
+### 8. Verificar se os containers estão rodando
 ```sh
 docker ps
 ```
 
-## 9. Testar a Conexão com o MongoDB
+### 9. Testar a Conexão com o MongoDB
 ```sh
 docker logs meu_node
+```
+
+## 8 - Criando um compose file para rodar uma aplicação com banco de dados
+
+### Configuração
+
+1. Clone este repositório e entre no diretório do projeto:
+   ```sh
+   git clone <url-do-repositorio>
+   cd <nome-do-diretorio>
+   ```
+
+2. Construa a imagem do Django:
+   ```sh
+   docker-compose build
+   ```
+
+3. Suba os containers:
+   ```sh
+   docker-compose up -d
+   ```
+
+4. Verifique se os containers estão rodando:
+   ```sh
+   docker ps
+   ```
+
+### Configuração do Django
+
+1. Acesse o container do Django:
+   ```sh
+   docker exec -it django_container bash
+   ```
+
+2. Aplique as migrações do banco de dados:
+   ```sh
+   python manage.py migrate
+   ```
+
+3. Crie um superusuário:
+   ```sh
+   python manage.py createsuperuser
+   ```
+
+4. Saia do container:
+   ```sh
+   exit
+   ```
+
+### Testando a Aplicação
+
+1. Acesse a aplicação no navegador:
+   ```
+   http://localhost:8000
+   ```
+
+2. Acesse o painel administrativo:
+   ```
+   http://localhost:8000/admin
+   ```
+
+3. Teste a API via terminal:
+   ```sh
+   curl -i http://localhost:8000
+   ```
+
+### Parar e Remover Containers
+
+Para parar e remover os containers, use:
+```sh
+   docker-compose down -v
 ```
