@@ -214,8 +214,6 @@ curl http://localhost:3000
 
 7 - Construindo uma rede Docker para comunicação entre containers
 
-# Passo a Passo: Node.js + MongoDB com Docker
-
 ## 1. Criar os arquivos do projeto
 ```sh
 mkdir meu-projeto && cd meu-projeto
