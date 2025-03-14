@@ -409,3 +409,61 @@ Para parar e remover os containers, use:
 ```sh
    docker-compose down -v
 ```
+
+## 9 - Criando uma imagem personalizada com um servidor web e arquivos estáticos
+### 1. Criar a estrutura do projeto
+```bash
+mkdir -p ~/meu-site-nginx
+cd ~/meu-site-nginx
+```
+
+### 2. Copiar os arquivos do site para a pasta do projeto
+Baixar e extrair os arquivos do site na pasta `~/meu-site-nginx`.
+
+### 3. Criar o arquivo Dockerfile
+```bash
+nano Dockerfile
+```
+**Conteúdo:**
+```dockerfile
+# Etapa 1: Construir o projeto
+FROM node:18 AS build
+
+WORKDIR /app
+
+# Copiar os arquivos do projeto
+COPY . .
+
+# Instalar dependências e construir o projeto
+RUN npm install && npm run build
+
+# Etapa 2: Criar a imagem final com Nginx
+FROM nginx:latest
+
+# Copiar os arquivos compilados para a pasta padrão do Nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expor a porta 80
+EXPOSE 80
+```
+
+### 4. Construir a imagem Docker
+```bash
+docker build -t meu-site-nginx .
+```
+
+### 5. Remover container antigo (se necessário)
+```bash
+docker stop site-container
+docker rm site-container
+```
+
+### 6. Rodar o novo container
+```bash
+docker run -d -p 8080:80 --name site-container meu-site-nginx
+```
+
+### 7. Acessar o site no navegador
+```
+http://localhost:8080
+```
