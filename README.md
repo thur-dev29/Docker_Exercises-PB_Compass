@@ -143,7 +143,7 @@ USE laravel;
 SELECT * FROM users;
 ```
 
-## Criando e rodando um container multi-stage
+## 6 Criando e rodando um container multi-stage
 ```bash
 wget https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
 sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
