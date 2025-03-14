@@ -211,3 +211,132 @@ docker run -d -p 3000:3000 --name meu-fiber go-fiber-app
 
 curl http://localhost:3000
 ```
+
+7 - Construindo uma rede Docker para comunicação entre containers
+
+# Passo a Passo: Node.js + MongoDB com Docker
+
+## 1. Criar os arquivos do projeto
+```sh
+mkdir meu-projeto && cd meu-projeto
+touch Dockerfile docker-compose.yml index.js package.json
+```
+
+## 2. Criar o `Dockerfile`
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "index.js"]
+```
+
+## 3. Criar o `docker-compose.yml`
+```yaml
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: meu_node
+    networks:
+      - minha_rede
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+
+  mongo:
+    image: mongo:6
+    container_name: meu_mongo
+    networks:
+      - minha_rede
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet localhost:27017
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  minha_rede:
+
+volumes:
+  mongo_data:
+```
+
+## 4. Criar o `package.json`
+```json
+{
+  "name": "meu-projeto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.6.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
+```
+
+## 5. Criar o `index.js`
+```js
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+const PORT = 3000;
+const MONGO_URL = 'mongodb://mongo:27017/meubanco';
+
+app.use(express.json());
+
+mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('🔥 Conectado ao MongoDB'))
+  .catch(err => console.error('Erro ao conectar ao Mongo:', err));
+
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+});
+```
+
+## 6. Instalar Dependências
+```sh
+npm install
+```
+
+Se estiver usando Docker, instale as dependências antes de construir o container:
+```sh
+docker run --rm -v $(pwd):/app -w /app node:18 npm install
+```
+
+## 7. Subir os Containers
+```sh
+docker-compose up -d --build
+```
+
+Se houver erro de módulos ausentes:
+```sh
+docker-compose down -v
+npm install
+docker-compose up -d --build
+```
+
+## 8. Verificar se os containers estão rodando
+```sh
+docker ps
+```
+
+## 9. Testar a Conexão com o MongoDB
+```sh
+docker logs meu_node
+```
