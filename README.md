@@ -212,15 +212,15 @@ docker run -d -p 3000:3000 --name meu-fiber go-fiber-app
 curl http://localhost:3000
 ```
 
-7 - Construindo uma rede Docker para comunicação entre containers
+## 7 - Construindo uma rede Docker para comunicação entre containers
 
-## 1. Criar os arquivos do projeto
+### 1. Criar os arquivos do projeto
 ```sh
 mkdir meu-projeto && cd meu-projeto
 touch Dockerfile docker-compose.yml index.js package.json
 ```
 
-## 2. Criar o `Dockerfile`
+### 2. Criar o `Dockerfile`
 ```dockerfile
 FROM node:18
 WORKDIR /app
@@ -231,7 +231,7 @@ EXPOSE 3000
 CMD ["node", "index.js"]
 ```
 
-## 3. Criar o `docker-compose.yml`
+### 3. Criar o `docker-compose.yml`
 ```yaml
 version: '3.8'
 
@@ -271,7 +271,7 @@ volumes:
   mongo_data:
 ```
 
-## 4. Criar o `package.json`
+### 4. Criar o `package.json`
 ```json
 {
   "name": "meu-projeto",
@@ -287,7 +287,7 @@ volumes:
 }
 ```
 
-## 5. Criar o `index.js`
+### 5. Criar o `index.js`
 ```js
 const express = require('express');
 const mongoose = require('mongoose');
@@ -307,7 +307,7 @@ app.listen(PORT, () => {
 });
 ```
 
-## 6. Instalar Dependências
+### 6. Instalar Dependências
 ```sh
 npm install
 ```
